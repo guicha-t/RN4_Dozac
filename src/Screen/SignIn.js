@@ -1,53 +1,21 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, TextInput, Button, Alert} from 'react-native';
 
+import { connect } from 'react-redux';
+
 import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
 import { TranslateSignIn } from '../components/translation';
 
-function SignIn({loading}) {
+function SignIn({loading, created, getCreate }) {
   if (loading) {
     return <LoadingIcon />;
   } else {
 
   }
-
+  console.log(created);
   const [email, onChangeEmail] = React.useState('thomas');
   const [pwd, onChangePwd] = React.useState('bonjour');
-
-  function FetchCreateAccount() {
-      fetch('http://193.70.90.162:3000/auth/signup', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: pwd,
-        }),
-      }).then(response => {
-           const statusCode = response.status;
-           if (statusCode == 200) {
-             const data = response.json();
-             return Promise.all([statusCode, data]);
-           } else {
-             return Promise.all([statusCode]);
-           }
-         })
-         .then(([res, data]) => {
-           console.log(res, data);
-           if (data == null) {
-             Alert.alert("Echec lors de la création du compte")
-           } else {
-             Alert.alert(JSON.stringify(data))
-           }
-         })
-         .catch(error => {
-           console.error(error);
-           return { name: "network error", description: "" };
-         });
-       }
 
   return (
     <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12}}>
@@ -73,7 +41,7 @@ function SignIn({loading}) {
         </View>
         <View style={{flex: 0.6, alignItems:'center', justifyContent:'center'}}>
           <Button
-            onPress={() => FetchCreateAccount()}
+            onPress={() => getCreate(email, pwd)}
             title="Créer"
             color='orange'
             accessibilityLabel="Learn more about this purple button"
@@ -84,4 +52,15 @@ function SignIn({loading}) {
   );
 }
 
-export default (StyleWrapper(SignIn))
+const mapStateToProps = state => ({
+  created: state.user.created
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getCreate: (email, pwd) => dispatch({ type: "CREATE", email: email, pwd: pwd}),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(SignIn))
+

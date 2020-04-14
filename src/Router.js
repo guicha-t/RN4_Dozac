@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { connect } from 'react-redux';
+
 import Menu from './Screen/Menu';
 import Header from './components/Header'
 import SplashScreen from './Screen/SplashScreen';
@@ -10,14 +12,19 @@ import LoadingIcon from './components/LoadingIcon';
 
 const Stack = createStackNavigator();
 
-export default function Router({ loading }) {
+function Router({route, navigation, loading, connected }) {
+  React.useEffect(() => {
+  }, [connected]);
 
+  if (loading) {
+    return <LoadingIcon />;
+  } else {
+    console.log(connected)
+  }
   // if (loading) {
   //   return <LoadingIcon />;
   // } else {
   // }
-
-  const connected = true;
 
   return (
     <Stack.Navigator
@@ -51,3 +58,15 @@ export default function Router({ loading }) {
     </Stack.Navigator>
   );
 }
+
+const mapStateToProps = state => ({
+  connected: state.user.connected
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getConnected: () => dispatch({ type: "CONNECTED"}),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Router)

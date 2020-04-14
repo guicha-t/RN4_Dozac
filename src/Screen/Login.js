@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, TextInput, Button, Alert} from 'react-native';
 
-import StyleWrapper from '../HOC/styleHOC';
+import { connect } from 'react-redux';
 
+import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
 
-function Login({loading}) {
+function Login({loading, connected, getConnected }) {
+
   if (loading) {
     return <LoadingIcon />;
   } else {
@@ -14,40 +16,6 @@ function Login({loading}) {
 
   const [email, onChangeEmail] = React.useState('thomas');
   const [pwd, onChangePwd] = React.useState('bonjour');
-
-  function FetchLogIn() {
-      fetch('http://193.70.90.162:3000/auth/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: pwd,
-        }),
-      }).then(response => {
-           const statusCode = response.status;
-           if (statusCode == 200) {
-             const data = response.json();
-             return Promise.all([statusCode, data]);
-           } else {
-             return Promise.all([statusCode]);
-           }
-         })
-         .then(([res, data]) => {
-           console.log(res, data);
-           if (data == null) {
-             Alert.alert("Echec lors de la création du compte")
-           } else {
-             Alert.alert(JSON.stringify(data))
-           }
-         })
-         .catch(error => {
-           console.error(error);
-           return { name: "network error", description: "" };
-         });
-       }
 
   return (
     <View style={{ flex: 1, justifyContent: 'flex-start'}}>
@@ -78,7 +46,7 @@ function Login({loading}) {
 
         <View style={{flex: 0.6, alignItems:'center', justifyContent:'center'}}>
           <Button
-            onPress={() => FetchLogIn()}
+            onPress={() => getConnected(email, pwd)}
             title="Se connecter"
             color='orange'
             accessibilityLabel="Learn more about this purple button"
@@ -90,4 +58,14 @@ function Login({loading}) {
   );
 }
 
-export default (StyleWrapper(Login))
+const mapStateToProps = state => ({
+  connected: state.user.connected
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getConnected: (email, pwd) => dispatch({ type: "CONNECT", email: email, pwd: pwd}),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(Login))
