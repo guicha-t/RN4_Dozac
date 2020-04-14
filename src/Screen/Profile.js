@@ -4,7 +4,6 @@ import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList }
 import StyleWrapper from '../HOC/styleHOC';
 
 import LoadingIcon from '../components/LoadingIcon';
-import MatchCard from '../components/MatchCard';
 
 function Profile({loading}) {
   if (loading) {

@@ -16,13 +16,6 @@ import { TranslateMenu } from '../components/translation';
 
 const Tab = createBottomTabNavigator();
 
-
-const TabItem = ({id}) => (
-  <Text>
-    <TranslateMenu id={id} />
-  </Text>
-)
-
 function Menu({ loading }) {
   // if (loading) {
   //   return <LoadingIcon />;

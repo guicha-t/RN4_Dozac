@@ -1,13 +1,6 @@
-import I18n from 'react-native-i18n';
-import {en} from '../i18n';
-import {fr} from '../i18n';
+import I18n from './i18n'
 
-I18n.fallbacks = true;
-
-I18n.translations = {
-  en,
-  fr
-};
+I18n.locale = 'en';
 
 export const Translate = (id) => I18n.t(id);
 

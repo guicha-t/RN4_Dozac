@@ -5,7 +5,6 @@ import { Button, Icon, Divider, withBadge } from 'react-native-elements';
 import StyleWrapper from '../HOC/styleHOC';
 
 import LoadingIcon from '../components/LoadingIcon';
-import MatchCard from '../components/MatchCard';
 
 import { TranslateSplashScreen } from '../components/translation';
 
