@@ -7,6 +7,7 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
 
+import * as ImagePicker from 'expo-image-picker';
 
 import StyleWrapper from '../HOC/styleHOC';
 
@@ -27,14 +28,20 @@ function Profile({loading, token}) {
   const [email, setEmail] = React.useState('');
   const [profilPic, setProfilPic] = React.useState('default.png');
 
-  const [hasPermission, setPermission] = React.useState('denied');
+
+  const [hasCameraPermission, setPermission] = React.useState('denied');
   const [cameraVisible, setCameraVisible] = React.useState(false);
+  const [hasCameraRollPermission, setRollPermission] = React.useState('denied');
   const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.front)
-  
+
   useEffect(() => {
     async function getPermission() {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
       if (status === 'granted') {
+        setPermission('granted')
+      }
+      const { statusRoll } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (statusRoll === 'granted') {
         setPermission('granted')
       }
     }
@@ -99,42 +106,60 @@ function Profile({loading, token}) {
     takePicture = async () => {
       console.log(cameraRef.takePictureAsync)
       if (cameraRef) {
-        let photo = await cameraRef.takePictureAsync();
+        let photo = await cameraRef.takePictureAsync({ base64: true });
+
+
+        const datasTosend = new FormData();
+        datasTosend.append('picEleve', photo.base64);
+
+        fetch('http://193.70.90.162:3000/users/uploadProfPic', {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            profPic: datasTosend,
+          }),
+        }).then(response => {
+             const statusCode = response.status;
+             if (statusCode == 200) {
+               const data = response.json();
+               return Promise.all([statusCode, data]);
+             } else {
+               return Promise.all([statusCode]);
+             }
+           })
+           .then(([res, data]) => {
+             console.log(res, data);
+             if (data == null) {
+               console.log("Echec updateProfPic")
+             } else {
+               ToastAndroid.showWithGravity(
+                 "Informations modifiées",
+                 ToastAndroid.SHORT,
+                 ToastAndroid.BOTTOM
+               );
+             }
+           })
+           .catch(error => {
+             console.error(error);
+             return { name: "network error", description: "" };
+           });
+
       }
     }
 
     if (cameraVisible === true) {
-      if (hasPermission === 'granted') {
+      if (hasCameraPermission === 'granted') {
         return (
           <View style={{flex: 0.6, padding: 20}}>
             <Camera style={{ flex: 1 }} type={cameraType} ref={ref => {
                 setCameraRef(ref);
               }} >
 
-            <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
-              <TouchableOpacity
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                }}>
-                <Ionicons
-                    name="ios-photos"
-                    style={{ color: "#fff", fontSize: 40}}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => takePicture()}
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  backgroundColor: 'transparent',
-                }}>
-                <FontAwesome
-                    name="camera"
-                    style={{ color: "#fff", fontSize: 40}}
-                />
-              </TouchableOpacity>
+            <View style={{flex:1,justifyContent:"space-between",margin:20}}>
               <TouchableOpacity
                 onPress={()=>handleCameraType()}
                 style={{
@@ -147,6 +172,20 @@ function Profile({loading, token}) {
                     style={{ color: "#fff", fontSize: 40}}
                 />
               </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => takePicture()}
+                style={{
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}>
+                <FontAwesome
+                    name="camera"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+              </TouchableOpacity>
+
               </View>
 
 
