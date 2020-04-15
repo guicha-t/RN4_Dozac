@@ -1,5 +1,7 @@
 import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, Alert, TextInput, Button, ToastAndroid} from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
+import { connect } from 'react-redux';
 
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
@@ -44,8 +46,7 @@ function Profile({loading, token}) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXNlciI6MiwidXNlcm5hbWUiOiJEZXNwZSIsInBhc3N3b3JkIjoiIiwiZW1haWwiOiJUaG9AbWFzIiwicHJvZlBpYyI6ImRlZmF1bHQucG5nIiwiY3JlYXRlZEF0IjoiMjAyMC0wNC0xNFQxNDo1Nzo1NS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMC0wNC0xNVQxMjo1NDoxMy4wMDBaIn0sImlhdCI6MTU4Njk1NTI3MH0.uwqhf26lqA40XFqXvbTPP-Qoel8hHRsJzge64BB3v1s",
-      },
+        'Authorization': 'Bearer ' + token      },
     }).then(response => {
          const statusCode = response.status;
          if (statusCode == 200) {
@@ -90,12 +91,25 @@ function Profile({loading, token}) {
     }
   }
 
+
+
   function selectBody(){
+    const [cameraRef, setCameraRef] = useState(null)
+
+    takePicture = async () => {
+      console.log(cameraRef.takePictureAsync)
+      if (cameraRef) {
+        let photo = await cameraRef.takePictureAsync();
+      }
+    }
+
     if (cameraVisible === true) {
       if (hasPermission === 'granted') {
         return (
           <View style={{flex: 0.6, padding: 20}}>
-            <Camera style={{ flex: 1 }} type={cameraType}>
+            <Camera style={{ flex: 1 }} type={cameraType} ref={ref => {
+                setCameraRef(ref);
+              }} >
 
             <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
               <TouchableOpacity
@@ -110,6 +124,7 @@ function Profile({loading, token}) {
                 />
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => takePicture()}
                 style={{
                   alignSelf: 'flex-end',
                   alignItems: 'center',
@@ -191,7 +206,7 @@ function Profile({loading, token}) {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXNlciI6MiwidXNlcm5hbWUiOiJEZXNwZSIsInBhc3N3b3JkIjoiIiwiZW1haWwiOiJUaG9AbWFzIiwicHJvZlBpYyI6ImRlZmF1bHQucG5nIiwiY3JlYXRlZEF0IjoiMjAyMC0wNC0xNFQxNDo1Nzo1NS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMC0wNC0xNVQxMjo1NDoxMy4wMDBaIn0sImlhdCI6MTU4Njk1NTI3MH0.uwqhf26lqA40XFqXvbTPP-Qoel8hHRsJzge64BB3v1s",
+        'Authorization': 'Bearer ' + token
       },
       body: JSON.stringify({
         email: email,
@@ -254,4 +269,10 @@ const mapStateToProps = state => ({
   token: state.user.token
 });
 
-export default (StyleWrapper(Profile))
+const mapDispatchToProps = dispatch => {
+  return {
+    getConnected: (email, pwd) => dispatch({ type: "CONNECT", email: email, pwd: pwd}),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(Profile))
