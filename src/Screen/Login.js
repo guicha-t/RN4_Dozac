@@ -14,7 +14,7 @@ function Login({loading, connected, getConnected }) {
 
   }
 
-  const [email, onChangeEmail] = React.useState('thomas');
+  const [email, onChangeEmail] = React.useState('Tho@mas');
   const [pwd, onChangePwd] = React.useState('bonjour');
 
   return (

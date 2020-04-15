@@ -13,13 +13,18 @@ import createSagaMiddleware from "redux-saga";
 import rootReducer from './src/store/reducers';
 
 const sagaMiddleware = createSagaMiddleware();
-const reduxDevTools =
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+//const reduxDevTools =
+//  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
-
+/*
 let store = createStore(
     rootReducer,
  compose(applyMiddleware(sagaMiddleware), reduxDevTools));
+*/
+ let store = createStore(
+     rootReducer,
+  compose(applyMiddleware(sagaMiddleware)));
+
 
 sagaMiddleware.run(watcherSaga);
 

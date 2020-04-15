@@ -1,5 +1,10 @@
-import React from 'react';
-import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, Alert, TextInput, Button} from 'react-native';
+import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, Alert, TextInput, Button, ToastAndroid} from 'react-native';
+import React, { useState, useEffect } from 'react';
+
+import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
+import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 import StyleWrapper from '../HOC/styleHOC';
 
@@ -8,27 +13,227 @@ import LoadingIcon from '../components/LoadingIcon';
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 
-function Profile({loading}) {
+function Profile({loading, token}) {
   if (loading) {
     return <LoadingIcon />;
   } else {
 
   }
 
-  const [nom, onChangeNom] = React.useState('New Nom');
-  const [prenom, onChangePrenom] = React.useState('New Prenom');
-  const [email, onChangeEmail] = React.useState('New Email');
+  const [idUser, setIdUser] = React.useState('');
+  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [profilPic, setProfilPic] = React.useState('default.png');
+
+  const [hasPermission, setPermission] = React.useState('denied');
+  const [cameraVisible, setCameraVisible] = React.useState(false);
+  const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.front)
+  
+  useEffect(() => {
+    async function getPermission() {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      if (status === 'granted') {
+        setPermission('granted')
+      }
+    }
+
+    getPermission();
+    console.log(token)
+    fetch('http://193.70.90.162:3000/users/profile', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXNlciI6MiwidXNlcm5hbWUiOiJEZXNwZSIsInBhc3N3b3JkIjoiIiwiZW1haWwiOiJUaG9AbWFzIiwicHJvZlBpYyI6ImRlZmF1bHQucG5nIiwiY3JlYXRlZEF0IjoiMjAyMC0wNC0xNFQxNDo1Nzo1NS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMC0wNC0xNVQxMjo1NDoxMy4wMDBaIn0sImlhdCI6MTU4Njk1NTI3MH0.uwqhf26lqA40XFqXvbTPP-Qoel8hHRsJzge64BB3v1s",
+      },
+    }).then(response => {
+         const statusCode = response.status;
+         if (statusCode == 200) {
+           const data = response.json();
+           return Promise.all([statusCode, data]);
+         } else {
+           return Promise.all([statusCode]);
+         }
+       })
+       .then(([res, data]) => {
+         console.log(data);
+         if (data == null) {
+           console.log("Echec GetInfoProfil")
+         } else {
+           // Attribution des datas
+           console.log(JSON.stringify(data))
+           setEmail(data.email)
+           setUsername(data.username)
+           setProfilPic(data.profPic)
+         }
+       })
+       .catch(error => {
+         console.error(error);
+         return { name: "network error", description: "" };
+       });
+
+  }, []);
+
+  function toggleCamera() {
+    if (cameraVisible === true) {
+      setCameraVisible(false);
+    } else {
+      setCameraVisible(true);
+    }
+  }
+
+  function handleCameraType() {
+    if (cameraType === Camera.Constants.Type.front) {
+      setCameraType(Camera.Constants.Type.back)
+    } else {
+      setCameraType(Camera.Constants.Type.front)
+    }
+  }
+
+  function selectBody(){
+    if (cameraVisible === true) {
+      if (hasPermission === 'granted') {
+        return (
+          <View style={{flex: 0.6, padding: 20}}>
+            <Camera style={{ flex: 1 }} type={cameraType}>
+
+            <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}>
+                <Ionicons
+                    name="ios-photos"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}>
+                <FontAwesome
+                    name="camera"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={()=>handleCameraType()}
+                style={{
+                  alignSelf: 'flex-end',
+                  alignItems: 'center',
+                  backgroundColor: 'transparent',
+                }}>
+                <MaterialCommunityIcons
+                    name="camera-switch"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+              </TouchableOpacity>
+              </View>
+
+
+            </Camera>
+          </View>
+        );
+      } else {
+        return (
+          <View style={{flex: 0.6, padding: 20}}>
+            <Text>Permission denied !</Text>
+          </View>
+        );
+      }
+
+    } else {
+      return (
+        <View style={{flex: 0.6, padding: 20}}>
+            <View style={{flex: 0.3, paddingBottom: 20}}>
+              <View style={{flex: 0.4}}>
+                <Text style={{fontSize: 18}}>Username</Text>
+              </View>
+              <View style={{flex: 0.6}}>
+                <TextInput
+                  style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'white' }}
+                  onChangeText={text => setUsername(text)}
+                  value={username}
+                />
+              </View>
+            </View>
+            <View style={{flex: 0.3, paddingBottom: 20}}>
+              <View style={{flex: 0.4}}>
+                <Text style={{fontSize: 18}}>Email</Text>
+              </View>
+              <View style={{flex: 0.6}}>
+                <TextInput
+                  style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'white' }}
+                  onChangeText={text => setEmail(text)}
+                  value={email}
+                />
+            </View>
+          </View>
+          <View style={{flex: 0.4, justifyContent:'flex-end', alignItems:'center'}}>
+            <Button
+              onPress={() => UpdateUserData()}
+              title="Enregistrer"
+              color='orange'
+            />
+          </View>
+        </View>
+      );
+    }
+  }
+
+  function UpdateUserData() {
+    fetch('http://193.70.90.162:3000/users/updateProfil', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkVXNlciI6MiwidXNlcm5hbWUiOiJEZXNwZSIsInBhc3N3b3JkIjoiIiwiZW1haWwiOiJUaG9AbWFzIiwicHJvZlBpYyI6ImRlZmF1bHQucG5nIiwiY3JlYXRlZEF0IjoiMjAyMC0wNC0xNFQxNDo1Nzo1NS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMC0wNC0xNVQxMjo1NDoxMy4wMDBaIn0sImlhdCI6MTU4Njk1NTI3MH0.uwqhf26lqA40XFqXvbTPP-Qoel8hHRsJzge64BB3v1s",
+      },
+      body: JSON.stringify({
+        email: email,
+        username: username,
+      }),
+    }).then(response => {
+         const statusCode = response.status;
+         if (statusCode == 200) {
+           const data = response.json();
+           return Promise.all([statusCode, data]);
+         } else {
+           return Promise.all([statusCode]);
+         }
+       })
+       .then(([res, data]) => {
+         console.log(res, data);
+         if (data == null) {
+           console.log("Echec updateProfil")
+         } else {
+           ToastAndroid.showWithGravity(
+             "Informations modifiées",
+             ToastAndroid.SHORT,
+             ToastAndroid.BOTTOM
+           );
+         }
+       })
+       .catch(error => {
+         console.error(error);
+         return { name: "network error", description: "" };
+       });
+  }
 
   return (
     <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12}}>
       <View style={{ flex: 0.4, backgroundColor: '#ffc848', alignItems: 'center', justifyContent:'center'}}>
         <Image
-          source={{ uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/old_logo.png'}}
+          source={{ uri: 'http://193.70.90.162:3000/images/default.png'}}
           style={{width: WIDTH/2, height: WIDTH/2, borderRadius: WIDTH/4}}
         />
-        <TouchableOpacity style={{position: 'absolute', right: 0, top: 0, padding: 20, }} onPress={() => Alert.alert("Hello")}>
+        <TouchableOpacity style={{position: 'absolute', right: 0, top: 0, padding: 20, }} onPress={() => toggleCamera()}>
           <Image
-              source={require('./../../assets/pen.png')}
+              source={require('./../../assets/photo-camera.png')}
               style={{width: 40, height: 40}}
           />
         </TouchableOpacity>
@@ -39,58 +244,14 @@ function Profile({loading}) {
           />
         </TouchableOpacity>
       </View>
-      <View style={{flex: 0.5, padding: 20}}>
+      {selectBody()}
 
-          <View style={{flex: 0.3, paddingBottom: 20}}>
-            <View style={{flex: 0.4}}>
-              <Text style={{fontSize: 18}}>Prénom</Text>
-            </View>
-            <View style={{flex: 0.6}}>
-              <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'white'}}
-                onChangeText={text => onChangeNom(text)}
-                value={nom}
-              />
-            </View>
-          </View>
-
-          <View style={{flex: 0.3, paddingBottom: 20}}>
-            <View style={{flex: 0.4}}>
-              <Text style={{fontSize: 18}}>Nom</Text>
-            </View>
-            <View style={{flex: 0.6}}>
-              <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'white' }}
-                onChangeText={text => onChangePrenom(text)}
-                value={prenom}
-              />
-            </View>
-          </View>
-
-          <View style={{flex: 0.3, paddingBottom: 20}}>
-            <View style={{flex: 0.4}}>
-              <Text style={{fontSize: 18}}>Email</Text>
-            </View>
-            <View style={{flex: 0.6}}>
-              <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'white' }}
-                onChangeText={text => onChangeEmail(text)}
-                value={email}
-              />
-          </View>
-
-        </View>
-      </View>
-      <View style={{flex: 0.1, justifyContent:'center', alignItems:'center'}}>
-        <Button
-          onPress={() => Alert.alert("ok")}
-          title="Enregistrer"
-          color='orange'
-          accessibilityLabel="Learn more about this purple button"
-        />
-      </View>
     </View>
   );
 }
+
+const mapStateToProps = state => ({
+  token: state.user.token
+});
 
 export default (StyleWrapper(Profile))
