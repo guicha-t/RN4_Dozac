@@ -20,12 +20,6 @@ const MessagesIcon = () => (
 
 export default function Header({ scene, previous, navigation }){
     const { options } = scene.descriptor;
-    const title =
-      options.headerTitle !== undefined
-        ? options.headerTitle
-        : options.title !== undefined
-        ? options.title
-        : scene.route.name;
   
     return (
       <View style={headerStyle.container} >

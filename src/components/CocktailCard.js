@@ -12,23 +12,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 // import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
-  card: {
-    width: '31%',
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    margin: 3, 
-    borderRadius: 6, 
-    backgroundColor: '#DEDEDE',
-  }
+
 })
 
-export default function CocktailCard({name, pic, cocktail }) {
+export default function CocktailCard({name, pic, cocktail, onPress, sty}) {
   if (cocktail === undefined) {
     return <LoadingIcon />;
   }
   return (
-    <View style={styles.card} >
-      <TouchableOpacity style={{justifyContent: 'center', alignItems:'center'}}>
+    <View style={sty} >
+      <TouchableOpacity style={{justifyContent: 'center', alignItems:'center'}} onPress={onPress}>
         <Image
           style={{height: 70, width: 70, margin: 3}}
           source={
@@ -38,7 +31,9 @@ export default function CocktailCard({name, pic, cocktail }) {
           }
           resizeMode="contain"
           />
-        <Text style={{flexWrap: 'wrap', textAlign: 'center', }}>{name}</Text>
+          <View>
+          <Text style={{flexWrap: 'wrap', textAlign: 'center', color: 'brown' }}>{name}</Text>
+          </View>
       </TouchableOpacity>
     </View>
 

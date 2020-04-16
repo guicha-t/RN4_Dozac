@@ -15,16 +15,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     flexWrap: 'wrap',
     alignItems: 'flex-start',
+  },
+  card: {
+    width: '31%',
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    margin: 3, 
+    borderRadius: 6, 
+    backgroundColor: 'blanchedalmond',
   }
 })
 
-function Cocktails() {
+const urlFamous = 'https://www.thecocktaildb.com/api/json/v2/9973533/popular.php'
+const urlIngredients = 'https://www.thecocktaildb.com/api/json/v2/9973533/popular.php'
+const urlRandom = 'https://www.thecocktaildb.com/api/json/v2/9973533/random.php'
+
+function Cocktails({ navigation }) {
   const [cocktails, setCocktails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasErrors, setErrors] = useState(false);
 
-  const fetchCocktails = async () => {
-    const res = await fetch('https://www.thecocktaildb.com/api/json/v2/9973533/popular.php');
+  const fetchCocktails = async (url) => {
+    const res = await fetch(url || urlFamous);
     const data = await res
     .json()
     .then(
@@ -40,30 +52,57 @@ function Cocktails() {
   if (loading) {
     return <LoadingIcon />;
   } else {
-    console.log(cocktails, hasErrors);
+    // console.log(cocktails, hasErrors);
   }
 
   return (
     <View style={{flex: 1}}>
-      <Text>Cocktails</Text>
+      <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'blanchedalmond'}}>
+        <Text style={{color: 'brown', fontSize: 20}} >Cocktails</Text>
+      </View>
+
+      <View style={{ justifyContent: 'flex-start', alignItems: 'center'}}>
+        <TouchableOpacity 
+          style={{margin: 3, padding: 5, backgroundColor: 'blanchedalmond', borderWidth: 1, borderRadius: 6}}
+          onPress={() => { fetchCocktails(urlFamous) }}
+          >
+          <Text style={{color: 'brown', margin: 3, marginLeft: 10, marginRight: 10}}>les 20 les plus populaires</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={{margin: 3, padding: 5, backgroundColor: 'blanchedalmond', borderWidth: 1, borderRadius: 6}}
+          onPress={() => { fetchCocktails(urlIngredients) }}
+          >
+          <Text style={{color: 'brown', margin: 3, marginLeft: 10, marginRight: 10}}>A partir de mes ingrédients</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={{margin: 3, padding: 5, backgroundColor: 'blanchedalmond', borderWidth: 1, borderRadius: 6}}
+          onPress={() => { fetchCocktails(urlRandom) }}
+          >
+          <Text style={{color: 'brown', margin: 3, marginLeft: 10, marginRight: 10}}>Aléatoire</Text>
+        </TouchableOpacity>
+
+
+      </View>
+
       <FlatList
         numColumns={3}
         data={cocktails}
         scrollEnabled={true}
         renderItem={({ item }) => 
           <CocktailCard
+            sty={styles.card}
             name={item.strDrink}
             pic={item.strDrinkThumb}
             cocktail={item} 
             onPress={() => {
-              this._onPress(item)
+              navigation.navigate('CocktailPage', {cocktailId: item})
             }} 
           />}
         contentContainerStyle={{
           justifyContent: 'space-between',
           alignItems: 'stretch'
         }}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => 'id' + index}
       />
 
     </View>

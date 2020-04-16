@@ -9,6 +9,7 @@ import SplashScreen from './Screen/SplashScreen';
 import Login from './Screen/Login';
 import SignIn from './Screen/SignIn';
 import LoadingIcon from './components/LoadingIcon';
+import CocktailPage from './Screen/CocktailPage'
 
 const Stack = createStackNavigator();
 

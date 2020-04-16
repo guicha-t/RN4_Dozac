@@ -45,12 +45,12 @@ function Login({loading, connected, getConnected }) {
         </View>
 
         <View style={{flex: 0.6, alignItems:'center', justifyContent:'center'}}>
-          <Button
+          <TouchableOpacity
+            style={{backgroundColor: 'blanchedalmond', margin: 4, padding: 10, borderWidth: 1, borderRadius: 6, }}
             onPress={() => getConnected(email, pwd)}
-            title="Se connecter"
-            color='orange'
-            accessibilityLabel="Learn more about this purple button"
-          />
+          >
+            <Text style={{color: 'brown', }}>Se connecter</Text>
+          </TouchableOpacity>
         </View>
 
       </View>

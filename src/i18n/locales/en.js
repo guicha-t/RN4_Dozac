@@ -3,6 +3,7 @@ export default {
     ingredients: 'Ingredients',
     cocktails: "Cocktails",
     profile: "Profile",
+    detail: 'Receip'
   },
   CockTails: {
     tables: "Tables",
