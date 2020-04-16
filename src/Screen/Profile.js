@@ -48,6 +48,14 @@ function Profile({loading, token}) {
 
     getPermission();
     console.log(token)
+
+    getUserInfo();
+
+
+
+  }, []);
+
+  function getUserInfo() {
     fetch('http://193.70.90.162:3000/users/profile', {
       method: 'GET',
       headers: {
@@ -79,8 +87,7 @@ function Profile({loading, token}) {
          console.error(error);
          return { name: "network error", description: "" };
        });
-
-  }, []);
+  }
 
   function toggleCamera() {
     if (cameraVisible === true) {
@@ -106,22 +113,30 @@ function Profile({loading, token}) {
     takePicture = async () => {
       console.log(cameraRef.takePictureAsync)
       if (cameraRef) {
-        let photo = await cameraRef.takePictureAsync({ base64: true });
+        let photo = await cameraRef.takePictureAsync({ base64: false });
 
+        let fileType = photo.uri.substring(photo.uri.lastIndexOf(".") + 1);
+        console.log("TYPE: " + fileType)
+        let uri = photo.uri
+        console.log(uri)
 
         const datasTosend = new FormData();
-        datasTosend.append('picEleve', photo.base64);
+        datasTosend.append('profPic', {
+          uri,
+          name: 'NewPP.jpg',
+          type: 'image/jpg'
+        });
+
+        console.log(datasTosend)
 
         fetch('http://193.70.90.162:3000/users/uploadProfPic', {
-          method: 'PUT',
+          method: 'POST',
           headers: {
-            Accept: 'application/json',
+            Accept: "application/json",
             'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer ' + token
           },
-          body: JSON.stringify({
-            profPic: datasTosend,
-          }),
+          body: datasTosend,
         }).then(response => {
              const statusCode = response.status;
              if (statusCode == 200) {
@@ -137,10 +152,12 @@ function Profile({loading, token}) {
                console.log("Echec updateProfPic")
              } else {
                ToastAndroid.showWithGravity(
-                 "Informations modifiées",
+                 "Photo modifiée",
                  ToastAndroid.SHORT,
                  ToastAndroid.BOTTOM
                );
+               getUserInfo();
+               toggleCamera();
              }
            })
            .catch(error => {
@@ -282,7 +299,7 @@ function Profile({loading, token}) {
     <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12}}>
       <View style={{ flex: 0.4, backgroundColor: '#ffc848', alignItems: 'center', justifyContent:'center'}}>
         <Image
-          source={{ uri: 'http://193.70.90.162:3000/images/default.png'}}
+          source={{ uri: 'http://193.70.90.162:3000/images/' + profilPic}}
           style={{width: WIDTH/2, height: WIDTH/2, borderRadius: WIDTH/4}}
         />
         <TouchableOpacity style={{position: 'absolute', right: 0, top: 0, padding: 20, }} onPress={() => toggleCamera()}>
