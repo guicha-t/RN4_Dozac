@@ -16,13 +16,13 @@ export default (state, action) => {
     case USER_INFO:
       return { ...state, token: action.token, userInfo: action.userInfo };
     case CONNECTED:
-      return { ...state, connected: true };
+      return { ...state, connected: action.connected };
     case CREATE:
       return { ...state };
     case CREATED:
       return { ...state, created: action.created };
     default:
-      return state || { connected: false, created: null, userInfo: {}, token: null };
+      return state || { connected: null, created: null, userInfo: {}, token: null };
   }
 };
 

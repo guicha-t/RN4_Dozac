@@ -26,11 +26,11 @@ export function* workerUserConnect(data){
         if (response.status === 200) {
             console.log(200);
             yield put({ type: 'USER_INFO', token: response.data.token, userInfo: response.data.user });
-            yield put ({type : 'CONNECTED'})
+            yield put ({type : 'CONNECTED', connected: true})
         }
     }catch (e) {
         console.log("error ", e)
-        yield put({ type: "ERROR"});
+        yield put ({type : 'CONNECTED', connected: false})
     }
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, TouchableOpacity, Text, TextInput, StyleSheet, Modal } from 'react-native';
 
 import { connect } from 'react-redux';
 
@@ -7,16 +7,28 @@ import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
 
 function Login({route, loading, getConnected, connected, navigation }) {
+  React.useEffect(() => {
+    setOpen(connected);
+  }, [connected]);
 
   if (loading) {
     return <LoadingIcon />;
   }
 
-  console.log(route.params)
-  const {user, pass} = route.params
+  let user = 'Tho@mas';
+  let pass = 'bonjour';
 
-  const [email, onChangeEmail] = React.useState(route.params != undefined ? user : 'Tho@mas');
-  const [pwd, onChangePwd] = React.useState(route.params != undefined ? pass : 'Tho@mas');
+  console.log("rout", route)
+  if (route.params != undefined) {
+    user = route.params.user;
+    pass = route.params.pass;
+  }
+  
+  console.log("user", user, pass)
+
+  const [email, onChangeEmail] = React.useState(user);
+  const [pwd, onChangePwd] = React.useState(pass);
+  const [open, setOpen] = React.useState(connected);
 
 
   return (
@@ -26,7 +38,7 @@ function Login({route, loading, getConnected, connected, navigation }) {
           connected ? navigation.navigate('Menu') : true
       }
 
-      <View style={{flex: 0.4, alignItems:'center', justifyContent:'center'}}>
+      <View style={{flex: 0.1, alignItems:'center', justifyContent:'center'}}>
         <Text>LOGO</Text>
       </View>
 
@@ -73,7 +85,39 @@ function Login({route, loading, getConnected, connected, navigation }) {
           >
             <Text style={{ color: 'brown' }}>Se connecter</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'blanchedalmond',
+              margin: 4,
+              padding: 10,
+              borderWidth: 1,
+              borderRadius: 6,
+            }}
+            onPress={() => navigation.navigate('SignIn')}
+          >
+            <Text style={{ color: 'brown' }}>Créer un compte</Text>
+          </TouchableOpacity>
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={open === false ? true : false}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Une erreur est survenue</Text>
+
+              <TouchableOpacity
+                style={{ padding: 10, backgroundColor: "blanchedalmond" }}
+                onPress={() => {
+                  setOpen(null);
+                }}
+              >
+                <Text style={styles.textStyle}>Réessayer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -90,3 +134,42 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(Login));
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  textStyle: {
+    color: "brown",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+});

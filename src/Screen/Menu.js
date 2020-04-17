@@ -22,30 +22,45 @@ function Menu({ navigation }) {
       tabBarOptions={{
         activeTintColor: 'tomato',
         inactiveTintColor: 'gray',
+        headerMode: "none",
       }}
+      headerShown={false}
+      headerMode="none"
     >
       <Tab.Screen name="Ingredients" component={Ingredients} 
         options={{
           tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("ingredients")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome name="bar-chart-o" size={size} color={color} />
+          tabBarIcon: ({ color, size }) => <FontAwesome name="bar-chart-o" size={size} color={color} />,
+          headerShown: false,
+          headerMode: "none",
+          header: () => null
         }}
       />
       <Tab.Screen name="Cocktails" component={Cocktails} 
         options={{
           tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("cocktails")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome5 name="tshirt" size={size} color={color} />
+          tabBarIcon: ({ color, size }) => <FontAwesome5 name="tshirt" size={size} color={color} />,
+          headerShown: false,
+          headerMode: "none",
+          header: () => null
         }}
       />
       <Tab.Screen name="CocktailPage" component={CocktailPage}
         options={{
           tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("detail")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome name="info" size={size} color={color} />
+          tabBarIcon: ({ color, size }) => <FontAwesome name="info" size={size} color={color} />,
+          headerShown: false,
+          headerMode: "none",
+          header: () => null
         }}
       />
       <Tab.Screen name="Profile" component={Profile} 
         options={{
           tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("profile")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome name="play-circle-o" size={size} color={color} />
+          tabBarIcon: ({ color, size }) => <FontAwesome name="play-circle-o" size={size} color={color} />,
+          headerShown: false,
+          headerMode: "none",
+          header: () => null
         }}
       />      
     </Tab.Navigator>

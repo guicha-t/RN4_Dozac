@@ -38,16 +38,16 @@ function Router({route, navigation, loading, connected }) {
     >
         <>
           <Stack.Screen name="SplashScreen" component={SplashScreen} 
-            options={{ header: props => null }}
+            options={{ header: props => null, headerShown: false }}
           />
           <Stack.Screen name="Login" component={Login} 
-            options={{ header: props => <Header {...props} /> }}
+            options={{ header: props => <Header {...props} />, headerShown: false }}
           />
           <Stack.Screen name="SignIn" component={SignIn} 
-            options={{ header: props => <Header {...props} /> }}
+            options={{ header: props => <Header {...props} />, headerShown: false }}
           />
           <Stack.Screen name="Menu" component={Menu} 
-            options={{ header: props => <Header {...props} /> }}
+            options={{ header: props => null,  headerShown: false, headerMode: "none" }}
           />
         </>
     </Stack.Navigator>

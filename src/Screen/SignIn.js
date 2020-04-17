@@ -65,6 +65,17 @@ function SignIn({ loading, created, getCreate, navigation }) {
           >
             <Text style={{color: 'brown'}}>Créer</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'blanchedalmond',
+              margin: 4,
+              padding: 10,
+              borderRadius: 6,
+            }}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={{ color: 'brown' }}>Se connecter</Text>
+          </TouchableOpacity>
         </View>
         <Modal
           animationType="slide"

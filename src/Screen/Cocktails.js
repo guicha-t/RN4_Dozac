@@ -61,7 +61,7 @@ function Cocktails({ navigation }) {
         <Text style={{color: 'brown', fontSize: 20}} >Cocktails</Text>
       </View>
 
-      <View style={{ justifyContent: 'flex-start', alignItems: 'center'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity 
           style={{margin: 3, padding: 5, backgroundColor: 'blanchedalmond', borderWidth: 1, borderRadius: 6}}
           onPress={() => { fetchCocktails(urlFamous) }}
@@ -70,18 +70,10 @@ function Cocktails({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity 
           style={{margin: 3, padding: 5, backgroundColor: 'blanchedalmond', borderWidth: 1, borderRadius: 6}}
-          onPress={() => { fetchCocktails(urlIngredients) }}
-          >
-          <Text style={{color: 'brown', margin: 3, marginLeft: 10, marginRight: 10}}>A partir de mes ingrédients</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={{margin: 3, padding: 5, backgroundColor: 'blanchedalmond', borderWidth: 1, borderRadius: 6}}
           onPress={() => { fetchCocktails(urlRandom) }}
           >
           <Text style={{color: 'brown', margin: 3, marginLeft: 10, marginRight: 10}}>Aléatoire</Text>
         </TouchableOpacity>
-
-
       </View>
 
       <FlatList

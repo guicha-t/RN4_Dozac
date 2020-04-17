@@ -31,9 +31,9 @@ const StyleWrapper = Wrapped => (props) => {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#e25a19', '#ff864d', '#fb9d71']} style={styles.linearGradient}>
-
-        <Wrapped {...rest} />
-
+        <View style={{flex: 1, paddingTop: 30}}>
+          <Wrapped {...rest} />
+        </View>
       </LinearGradient>
     </View>
   )
