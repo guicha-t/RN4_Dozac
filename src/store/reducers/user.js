@@ -12,7 +12,7 @@ export default (state, action) => {
     case CONNECT:
       return { ...state, email: action.email, pwd: action.pwd};
     case DISCONNECT:
-      return { ...state, connected: false };
+      return { ...state, connected: false, token: null };
     case USER_INFO:
       return { ...state, token: action.token, userInfo: action.userInfo };
     case CONNECTED:

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
 
-function Login({loading, getConnected }) {
+function Login({loading, getConnected, connected, navigation }) {
 
   if (loading) {
     return <LoadingIcon />;
@@ -17,8 +17,13 @@ function Login({loading, getConnected }) {
   const [email, onChangeEmail] = React.useState('Tho@mas');
   const [pwd, onChangePwd] = React.useState('bonjour');
 
+
   return (
     <View style={{ flex: 1, justifyContent: 'flex-start'}}>
+
+      {
+          connected ? navigation.navigate('Menu') : true
+      }
 
       <View style={{flex: 0.4, alignItems:'center', justifyContent:'center'}}>
         <Text>LOGO</Text>

@@ -33,16 +33,9 @@ function Router({route, navigation, loading, connected }) {
         headerStyle: {
           backgroundColor: '#152654',
         },
-        headerMode: "screen",
+        headerMode: "none",
       }}
     >
-      { connected ? (
-        <>
-          <Stack.Screen name="Menu" component={Menu} 
-            options={{ header: props => <Header {...props} /> }}
-          />
-        </>
-        ) : (
         <>
           <Stack.Screen name="SplashScreen" component={SplashScreen} 
             options={{ header: props => null }}
@@ -53,9 +46,10 @@ function Router({route, navigation, loading, connected }) {
           <Stack.Screen name="SignIn" component={SignIn} 
             options={{ header: props => <Header {...props} /> }}
           />
+          <Stack.Screen name="Menu" component={Menu} 
+            options={{ header: props => <Header {...props} /> }}
+          />
         </>
-        )
-      }
     </Stack.Navigator>
   );
 }

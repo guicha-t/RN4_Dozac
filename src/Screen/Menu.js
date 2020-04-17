@@ -16,7 +16,7 @@ import { TranslateMenu } from '../components/translation';
 
 const Tab = createBottomTabNavigator();
 
-function Menu() {
+function Menu({ navigation }) {
   return (
     <Tab.Navigator
       tabBarOptions={{

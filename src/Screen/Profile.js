@@ -23,7 +23,7 @@ import LoadingIcon from '../components/LoadingIcon';
 
 const WIDTH = Dimensions.get('window').width;
 
-function Profile({ loading, token }) {
+function Profile({ loading, token, getSchwifty, navigation }) {
   if (loading) {
     return <LoadingIcon />;
   }
@@ -319,7 +319,12 @@ function Profile({ loading, token }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ position: 'absolute', left: 0, top: 0, padding: 20 }}
-          onPress={() => Alert.alert('Hello')}
+          onPress={() => 
+            {
+              getSchwifty() 
+              navigation.navigate('SplashScreen');
+            }
+          }
         >
           <Image source={require('../../assets/logout.png')} style={{ width: 40, height: 40 }} />
         </TouchableOpacity>
@@ -336,6 +341,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     getConnected: (email, pwd) => dispatch({ type: 'CONNECT', email, pwd }),
+    getSchwifty: () => dispatch({ type: 'DISCONNECT'}) 
   };
 };
 

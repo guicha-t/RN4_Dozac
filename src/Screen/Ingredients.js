@@ -95,13 +95,13 @@ function Ingredients({ navigation }) {
                 <Text>Ajouter</Text>
               </TouchableOpacity>
               <TextInput
-              style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'blanchedalmond'}}
+              style={{ height: 40, minWidth: 200, borderColor: 'gray', borderWidth: 1, paddingLeft: 10, backgroundColor:'blanchedalmond'}}
               onChangeText={(text) => setName(text)}
               value={name}
             />
             </View>
         </View>
-      <ScrollView>
+
       <View style={{flexDirection: 'row'}}>
         <View style={{flexDirection: 'row', backgroundColor: 'chocolate', margin: 3, minWidth: 60}}>
           {
@@ -137,7 +137,6 @@ function Ingredients({ navigation }) {
           />
         </View>
       </View>
-      </ScrollView>
     </View>
   );
 }
