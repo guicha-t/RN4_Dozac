@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, TextInput, Button, Alert} from 'react-native';
+import { View, Text, TextInput, Button } from 'react-native';
 
 import { connect } from 'react-redux';
 
 import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
-import { TranslateSignIn } from '../components/translation';
 
 function SignIn({loading, created, getCreate }) {
   if (loading) {

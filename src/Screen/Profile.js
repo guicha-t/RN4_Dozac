@@ -1,19 +1,16 @@
-import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet, FlatList, Alert, TextInput, Button, ToastAndroid} from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
+import { View, TouchableOpacity, Text, Image, Dimensions, Alert, TextInput, Button, ToastAndroid} from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
-import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
-
-import * as ImagePicker from 'expo-image-picker';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import StyleWrapper from '../HOC/styleHOC';
 
 import LoadingIcon from '../components/LoadingIcon';
 
-const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 
 function Profile({loading, token}) {
@@ -23,7 +20,6 @@ function Profile({loading, token}) {
 
   }
 
-  const [idUser, setIdUser] = React.useState('');
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [profilPic, setProfilPic] = React.useState('default.png');
@@ -31,7 +27,6 @@ function Profile({loading, token}) {
 
   const [hasCameraPermission, setPermission] = React.useState('denied');
   const [cameraVisible, setCameraVisible] = React.useState(false);
-  const [hasCameraRollPermission, setRollPermission] = React.useState('denied');
   const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.front)
 
   useEffect(() => {
@@ -76,8 +71,6 @@ function Profile({loading, token}) {
          if (data == null) {
            console.log("Echec GetInfoProfil")
          } else {
-           // Attribution des datas
-           console.log(JSON.stringify(data))
            setEmail(data.email)
            setUsername(data.username)
            setProfilPic(data.profPic)
