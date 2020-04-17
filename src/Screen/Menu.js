@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet } from 'react-native';
+import { Text} from 'react-native';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 
 import StyleWrapper from '../HOC/styleHOC';
-import LoadingIcon from '../components/LoadingIcon';
 
 import Ingredients from './Ingredients';
 import Cocktails from './Cocktails';
@@ -17,13 +16,7 @@ import { TranslateMenu } from '../components/translation';
 
 const Tab = createBottomTabNavigator();
 
-function Menu({ loading }) {
-  // if (loading) {
-  //   return <LoadingIcon />;
-  // } else {
-  // }
-
-
+function Menu() {
   return (
     <Tab.Navigator
       tabBarOptions={{
