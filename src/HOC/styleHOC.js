@@ -6,37 +6,35 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    flexDirection: 'column', 
-    justifyContent: 'flex-start'
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   linearGradient: {
     flex: 1,
   },
-  pubContainer : {
+  pubContainer: {
     flex: 0.2,
     maxHeight: 70,
   },
   pub: {
     flex: 1,
-    backgroundColor: 'grey'
+    backgroundColor: 'grey',
   },
-})
+});
 
-const StyleWrapper = Wrapped => (props) => {
+const StyleWrapper = Wrapped => props => {
   let { open, message, ...rest } = props;
   if (open === undefined) {
-      open = false;
+    open = false;
   }
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#e25a19', '#ff864d', '#fb9d71']} style={styles.linearGradient}>
-
         <Wrapped {...rest} />
-
       </LinearGradient>
     </View>
-  )
-}
+  );
+};
 
-export default StyleWrapper
+export default StyleWrapper;

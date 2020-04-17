@@ -2,12 +2,13 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "test": "jest",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint src/**/*.tsx App.tsx",
-    "fix": "eslint src/**/*.tsx App.tsx --fix"
+    "lint": "eslint src/**/*.js App.js",
+    "fix": "eslint src/**/*.js App.js --fix"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.5",
@@ -15,17 +16,14 @@
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",
     "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
     "core-js": "^3.6.4",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-prettier": "^3.1.2",
     "expo": "~36.0.0",
     "expo-camera": "~8.0.0",
     "expo-image-picker": "~8.0.1",
     "expo-localization": "~8.0.0",
     "expo-permissions": "~8.0.0",
     "i18n-js": "^3.5.1",
-    "prettier": "^1.19.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
@@ -44,13 +42,27 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "babel-jest": "^25.3.0",
     "babel-preset-expo": "~8.0.0",
-    "eslint-config-airbnb": "^18.0.1",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.18.3",
-    "eslint-plugin-react-hooks": "^2.3.0",
-    "eslint-plugin-react-native": "^3.8.1"
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "eslint-plugin-react-native": "^3.8.1",
+    "jest": "^25.3.0",
+    "jest-expo": "^37.0.0",
+    "prettier": "^1.19.1",
+    "react-test-renderer": "^16.13.1"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ]
   },
   "private": true
 }

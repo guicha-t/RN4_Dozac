@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react';
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { View, TouchableOpacity, Text, Image, Dimensions, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
-
 import StyleWrapper from '../HOC/styleHOC';
-import LoadingIcon from '../components/LoadingIcon';
 
 import Ingredients from './Ingredients';
 import Cocktails from './Cocktails';
@@ -17,12 +17,11 @@ import { TranslateMenu } from '../components/translation';
 
 const Tab = createBottomTabNavigator();
 
-function Menu({ loading }) {
+function Menu() {
   // if (loading) {
   //   return <LoadingIcon />;
   // } else {
   // }
-
 
   return (
     <Tab.Navigator
@@ -31,32 +30,44 @@ function Menu({ loading }) {
         inactiveTintColor: 'gray',
       }}
     >
-      <Tab.Screen name="Ingredients" component={Ingredients} 
+      <Tab.Screen
+        name="Ingredients"
+        component={Ingredients}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("ingredients")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome name="bar-chart-o" size={size} color={color} />
+          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('ingredients')}</Text>,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="bar-chart-o" size={size} color={color} />
+          ),
         }}
       />
-      <Tab.Screen name="Cocktails" component={Cocktails} 
+      <Tab.Screen
+        name="Cocktails"
+        component={Cocktails}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("cocktails")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome5 name="tshirt" size={size} color={color} />
+          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('cocktails')}</Text>,
+          tabBarIcon: ({ color, size }) => <FontAwesome5 name="tshirt" size={size} color={color} />,
         }}
       />
-      <Tab.Screen name="CocktailPage" component={CocktailPage}
+      <Tab.Screen
+        name="CocktailPage"
+        component={CocktailPage}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("detail")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome name="info" size={size} color={color} />
+          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('detail')}</Text>,
+          tabBarIcon: ({ color, size }) => <FontAwesome name="info" size={size} color={color} />,
         }}
       />
-      <Tab.Screen name="Profile" component={Profile} 
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu("profile")}</Text>,
-          tabBarIcon: ({ color, size }) => <FontAwesome name="play-circle-o" size={size} color={color} />
+          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('profile')}</Text>,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="play-circle-o" size={size} color={color} />
+          ),
         }}
-      />      
+      />
     </Tab.Navigator>
   );
 }
 
-export default (StyleWrapper(Menu))
+export default StyleWrapper(Menu);

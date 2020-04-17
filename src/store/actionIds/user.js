@@ -4,4 +4,3 @@ export const USER_INFO = 'USER_INFO';
 export const CONNECTED = 'CONNECTED';
 export const CREATE = 'CREATE';
 export const CREATED = 'CREATED';
-

@@ -4,24 +4,23 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
 import Menu from './Screen/Menu';
-import Header from './components/Header'
+import Header from './components/Header';
 import SplashScreen from './Screen/SplashScreen';
 import Login from './Screen/Login';
 import SignIn from './Screen/SignIn';
 import LoadingIcon from './components/LoadingIcon';
-import CocktailPage from './Screen/CocktailPage'
+import CocktailPage from './Screen/CocktailPage';
 
 const Stack = createStackNavigator();
 
-function Router({route, navigation, loading, connected }) {
-  React.useEffect(() => {
-  }, [connected]);
+function Router({ route, navigation, loading, connected }) {
+  React.useEffect(() => {}, [connected]);
 
   if (loading) {
     return <LoadingIcon />;
-  } else {
-    console.log(connected)
   }
+  console.log(connected);
+
   // if (loading) {
   //   return <LoadingIcon />;
   // } else {
@@ -33,41 +32,48 @@ function Router({route, navigation, loading, connected }) {
         headerStyle: {
           backgroundColor: '#152654',
         },
-        headerMode: "screen",
+        headerMode: 'screen',
       }}
     >
-      { connected ? (
+      {connected ? (
         <>
-          <Stack.Screen name="Menu" component={Menu} 
+          <Stack.Screen
+            name="Menu"
+            component={Menu}
             options={{ header: props => <Header {...props} /> }}
           />
         </>
-        ) : (
+      ) : (
         <>
-          <Stack.Screen name="SplashScreen" component={SplashScreen} 
+          <Stack.Screen
+            name="SplashScreen"
+            component={SplashScreen}
             options={{ header: props => null }}
           />
-          <Stack.Screen name="Login" component={Login} 
+          <Stack.Screen
+            name="Login"
+            component={Login}
             options={{ header: props => <Header {...props} /> }}
           />
-          <Stack.Screen name="SignIn" component={SignIn} 
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
             options={{ header: props => <Header {...props} /> }}
           />
         </>
-        )
-      }
+      )}
     </Stack.Navigator>
   );
 }
 
 const mapStateToProps = state => ({
-  connected: state.user.connected
+  connected: state.user.connected,
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    getConnected: () => dispatch({ type: "CONNECTED"}),
+    getConnected: () => dispatch({ type: 'CONNECTED' }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Router)
+export default connect(mapStateToProps, mapDispatchToProps)(Router);
