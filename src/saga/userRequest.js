@@ -57,10 +57,10 @@ export function* workerUserCreate(data){
         console.log("response", response);
         if (response.status === 200) {
             console.log(200);
-            yield put ({type : 'CREATED'})
+            yield put ({type : 'CREATED', created: true })
         }
     }catch (e) {
         console.log("error ", e)
-        yield put({ type: "ERROR"});
+        yield put ({type : 'CREATED', created: false })
     }
 }

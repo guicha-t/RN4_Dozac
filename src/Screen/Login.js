@@ -6,14 +6,17 @@ import { connect } from 'react-redux';
 import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
 
-function Login({loading, getConnected, connected, navigation }) {
+function Login({route, loading, getConnected, connected, navigation }) {
 
   if (loading) {
     return <LoadingIcon />;
   }
 
-  const [email, onChangeEmail] = React.useState('Tho@mas');
-  const [pwd, onChangePwd] = React.useState('bonjour');
+  console.log(route.params)
+  const {user, pass} = route.params
+
+  const [email, onChangeEmail] = React.useState(route.params != undefined ? user : 'Tho@mas');
+  const [pwd, onChangePwd] = React.useState(route.params != undefined ? pass : 'Tho@mas');
 
 
   return (

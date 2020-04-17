@@ -20,9 +20,9 @@ export default (state, action) => {
     case CREATE:
       return { ...state };
     case CREATED:
-      return { ...state, created: true };
+      return { ...state, created: action.created };
     default:
-      return state || { connected: false, created: false, userInfo: {}, token: null };
+      return state || { connected: false, created: null, userInfo: {}, token: null };
   }
 };
 
