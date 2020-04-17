@@ -1,24 +1,22 @@
-import React from "react";
-import { View, TouchableOpacity, Text, TextInput } from "react-native";
+import React from 'react';
+import { View, TouchableOpacity, Text, TextInput } from 'react-native';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import StyleWrapper from "../HOC/styleHOC";
-import LoadingIcon from "../components/LoadingIcon";
+import StyleWrapper from '../HOC/styleHOC';
+import LoadingIcon from '../components/LoadingIcon';
 
 function Login({ loading, getConnected }) {
   if (loading) {
     return <LoadingIcon />;
   }
 
-  const [email, onChangeEmail] = React.useState("Tho@mas");
-  const [pwd, onChangePwd] = React.useState("bonjour");
+  const [email, onChangeEmail] = React.useState('Tho@mas');
+  const [pwd, onChangePwd] = React.useState('bonjour');
 
   return (
-    <View style={{ flex: 1, justifyContent: "flex-start" }}>
-      <View
-        style={{ flex: 0.4, alignItems: "center", justifyContent: "center" }}
-      >
+    <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+      <View style={{ flex: 0.4, alignItems: 'center', justifyContent: 'center' }}>
         <Text>LOGO</Text>
       </View>
 
@@ -28,12 +26,12 @@ function Login({ loading, getConnected }) {
           <TextInput
             style={{
               height: 40,
-              borderColor: "gray",
+              borderColor: 'gray',
               borderWidth: 1,
               paddingLeft: 10,
-              backgroundColor: "white",
+              backgroundColor: 'white',
             }}
-            onChangeText={(text) => onChangeEmail(text)}
+            onChangeText={text => onChangeEmail(text)}
             value={email}
           />
         </View>
@@ -42,22 +40,20 @@ function Login({ loading, getConnected }) {
           <TextInput
             style={{
               height: 40,
-              borderColor: "gray",
+              borderColor: 'gray',
               borderWidth: 1,
               paddingLeft: 10,
-              backgroundColor: "white",
+              backgroundColor: 'white',
             }}
-            onChangeText={(text) => onChangePwd(text)}
+            onChangeText={text => onChangePwd(text)}
             value={pwd}
           />
         </View>
 
-        <View
-          style={{ flex: 0.6, alignItems: "center", justifyContent: "center" }}
-        >
+        <View style={{ flex: 0.6, alignItems: 'center', justifyContent: 'center' }}>
           <TouchableOpacity
             style={{
-              backgroundColor: "blanchedalmond",
+              backgroundColor: 'blanchedalmond',
               margin: 4,
               padding: 10,
               borderWidth: 1,
@@ -65,7 +61,7 @@ function Login({ loading, getConnected }) {
             }}
             onPress={() => getConnected(email, pwd)}
           >
-            <Text style={{ color: "brown" }}>Se connecter</Text>
+            <Text style={{ color: 'brown' }}>Se connecter</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -73,17 +69,14 @@ function Login({ loading, getConnected }) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   connected: state.user.connected,
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getConnected: (email, pwd) => dispatch({ type: "CONNECT", email, pwd }),
+    getConnected: (email, pwd) => dispatch({ type: 'CONNECT', email, pwd }),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StyleWrapper(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(Login));

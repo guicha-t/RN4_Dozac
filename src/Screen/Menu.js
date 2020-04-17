@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -18,11 +16,6 @@ import { TranslateMenu } from '../components/translation';
 const Tab = createBottomTabNavigator();
 
 function Menu() {
-  // if (loading) {
-  //   return <LoadingIcon />;
-  // } else {
-  // }
-
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -34,7 +27,7 @@ function Menu() {
         name="Ingredients"
         component={Ingredients}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('ingredients')}</Text>,
+          tabBarLabel: () => <Text>{TranslateMenu('ingredients')}</Text>,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="bar-chart-o" size={size} color={color} />
           ),
@@ -44,7 +37,7 @@ function Menu() {
         name="Cocktails"
         component={Cocktails}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('cocktails')}</Text>,
+          tabBarLabel: () => <Text>{TranslateMenu('cocktails')}</Text>,
           tabBarIcon: ({ color, size }) => <FontAwesome5 name="tshirt" size={size} color={color} />,
         }}
       />
@@ -52,7 +45,7 @@ function Menu() {
         name="CocktailPage"
         component={CocktailPage}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('detail')}</Text>,
+          tabBarLabel: () => <Text>{TranslateMenu('detail')}</Text>,
           tabBarIcon: ({ color, size }) => <FontAwesome name="info" size={size} color={color} />,
         }}
       />
@@ -60,7 +53,7 @@ function Menu() {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: ({ color, size }) => <Text>{TranslateMenu('profile')}</Text>,
+          tabBarLabel: () => <Text>{TranslateMenu('profile')}</Text>,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="play-circle-o" size={size} color={color} />
           ),

@@ -8,49 +8,43 @@ import {
   TextInput,
   Button,
   ToastAndroid,
-} from "react-native";
-import React, { useState, useEffect } from "react";
+} from 'react-native';
+import React, { useState, useEffect } from 'react';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-import { Camera } from "expo-camera";
-import * as Permissions from "expo-permissions";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import StyleWrapper from "../HOC/styleHOC";
+import StyleWrapper from '../HOC/styleHOC';
 
-import LoadingIcon from "../components/LoadingIcon";
+import LoadingIcon from '../components/LoadingIcon';
 
-const WIDTH = Dimensions.get("window").width;
+const WIDTH = Dimensions.get('window').width;
 
 function Profile({ loading, token }) {
   if (loading) {
     return <LoadingIcon />;
   }
 
-  const [idUser, setIdUser] = React.useState("");
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [profilPic, setProfilPic] = React.useState("default.png");
+  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [profilPic, setProfilPic] = React.useState('default.png');
 
-  const [hasCameraPermission, setPermission] = React.useState("denied");
+  const [hasCameraPermission, setPermission] = React.useState('denied');
   const [cameraVisible, setCameraVisible] = React.useState(false);
-  const [hasCameraRollPermission, setRollPermission] = React.useState("denied");
-  const [cameraType, setCameraType] = React.useState(
-    Camera.Constants.Type.front
-  );
+  const [cameraType, setCameraType] = React.useState(Camera.Constants.Type.front);
 
   useEffect(() => {
     async function getPermission() {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
-      if (status === "granted") {
-        setPermission("granted");
+      if (status === 'granted') {
+        setPermission('granted');
       }
-      const { statusRoll } = await Permissions.askAsync(
-        Permissions.CAMERA_ROLL
-      );
-      if (statusRoll === "granted") {
-        setPermission("granted");
+      const { statusRoll } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (statusRoll === 'granted') {
+        setPermission('granted');
       }
     }
 
@@ -61,15 +55,15 @@ function Profile({ loading, token }) {
   }, []);
 
   function getUserInfo() {
-    fetch("http://193.70.90.162:3000/users/profile", {
-      method: "GET",
+    fetch('http://193.70.90.162:3000/users/profile', {
+      method: 'GET',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
+      .then(response => {
         const statusCode = response.status;
         if (statusCode == 200) {
           const data = response.json();
@@ -80,7 +74,7 @@ function Profile({ loading, token }) {
       .then(([res, data]) => {
         console.log(data);
         if (data == null) {
-          console.log("Echec GetInfoProfil");
+          console.log('Echec GetInfoProfil');
         } else {
           // Attribution des datas
           console.log(JSON.stringify(data));
@@ -89,9 +83,9 @@ function Profile({ loading, token }) {
           setProfilPic(data.profPic);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        return { name: "network error", description: "" };
+        return { name: 'network error', description: '' };
       });
   }
 
@@ -119,30 +113,30 @@ function Profile({ loading, token }) {
       if (cameraRef) {
         const photo = await cameraRef.takePictureAsync({ base64: false });
 
-        const fileType = photo.uri.substring(photo.uri.lastIndexOf(".") + 1);
+        const fileType = photo.uri.substring(photo.uri.lastIndexOf('.') + 1);
         console.log(`TYPE: ${fileType}`);
         const { uri } = photo;
         console.log(uri);
 
         const datasTosend = new FormData();
-        datasTosend.append("profPic", {
+        datasTosend.append('profPic', {
           uri,
-          name: "NewPP.jpg",
-          type: "image/jpg",
+          name: 'NewPP.jpg',
+          type: 'image/jpg',
         });
 
         console.log(datasTosend);
 
-        fetch("http://193.70.90.162:3000/users/uploadProfPic", {
-          method: "POST",
+        fetch('http://193.70.90.162:3000/users/uploadProfPic', {
+          method: 'POST',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
           body: datasTosend,
         })
-          .then((response) => {
+          .then(response => {
             const statusCode = response.status;
             if (statusCode == 200) {
               const data = response.json();
@@ -153,10 +147,10 @@ function Profile({ loading, token }) {
           .then(([res, data]) => {
             console.log(res, data);
             if (data == null) {
-              console.log("Echec updateProfPic");
+              console.log('Echec updateProfPic');
             } else {
               ToastAndroid.showWithGravity(
-                "Photo modifiée",
+                'Photo modifiée',
                 ToastAndroid.SHORT,
                 ToastAndroid.BOTTOM
               );
@@ -164,53 +158,48 @@ function Profile({ loading, token }) {
               toggleCamera();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.error(error);
-            return { name: "network error", description: "" };
+            return { name: 'network error', description: '' };
           });
       }
     };
 
     if (cameraVisible === true) {
-      if (hasCameraPermission === "granted") {
+      if (hasCameraPermission === 'granted') {
         return (
           <View style={{ flex: 0.6, padding: 20 }}>
             <Camera
               style={{ flex: 1 }}
               type={cameraType}
-              ref={(ref) => {
+              ref={ref => {
                 setCameraRef(ref);
               }}
             >
-              <View
-                style={{ flex: 1, justifyContent: "space-between", margin: 20 }}
-              >
+              <View style={{ flex: 1, justifyContent: 'space-between', margin: 20 }}>
                 <TouchableOpacity
                   onPress={() => handleCameraType()}
                   style={{
-                    alignSelf: "flex-end",
-                    alignItems: "center",
-                    backgroundColor: "transparent",
+                    alignSelf: 'flex-end',
+                    alignItems: 'center',
+                    backgroundColor: 'transparent',
                   }}
                 >
                   <MaterialCommunityIcons
                     name="camera-switch"
-                    style={{ color: "#fff", fontSize: 40 }}
+                    style={{ color: '#fff', fontSize: 40 }}
                   />
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   onPress={() => takePicture()}
                   style={{
-                    alignSelf: "center",
-                    alignItems: "center",
-                    backgroundColor: "transparent",
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'transparent',
                   }}
                 >
-                  <FontAwesome
-                    name="camera"
-                    style={{ color: "#fff", fontSize: 40 }}
-                  />
+                  <FontAwesome name="camera" style={{ color: '#fff', fontSize: 40 }} />
                 </TouchableOpacity>
               </View>
             </Camera>
@@ -233,12 +222,12 @@ function Profile({ loading, token }) {
             <TextInput
               style={{
                 height: 40,
-                borderColor: "gray",
+                borderColor: 'gray',
                 borderWidth: 1,
                 paddingLeft: 10,
-                backgroundColor: "white",
+                backgroundColor: 'white',
               }}
-              onChangeText={(text) => setUsername(text)}
+              onChangeText={text => setUsername(text)}
               value={username}
             />
           </View>
@@ -251,12 +240,12 @@ function Profile({ loading, token }) {
             <TextInput
               style={{
                 height: 40,
-                borderColor: "gray",
+                borderColor: 'gray',
                 borderWidth: 1,
                 paddingLeft: 10,
-                backgroundColor: "white",
+                backgroundColor: 'white',
               }}
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={text => setEmail(text)}
               value={email}
             />
           </View>
@@ -264,26 +253,22 @@ function Profile({ loading, token }) {
         <View
           style={{
             flex: 0.4,
-            justifyContent: "flex-end",
-            alignItems: "center",
+            justifyContent: 'flex-end',
+            alignItems: 'center',
           }}
         >
-          <Button
-            onPress={() => UpdateUserData()}
-            title="Enregistrer"
-            color="orange"
-          />
+          <Button onPress={() => UpdateUserData()} title="Enregistrer" color="orange" />
         </View>
       </View>
     );
   }
 
   function UpdateUserData() {
-    fetch("http://193.70.90.162:3000/users/updateProfil", {
-      method: "POST",
+    fetch('http://193.70.90.162:3000/users/updateProfil', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
@@ -291,7 +276,7 @@ function Profile({ loading, token }) {
         username,
       }),
     })
-      .then((response) => {
+      .then(response => {
         const statusCode = response.status;
         if (statusCode == 200) {
           const data = response.json();
@@ -302,29 +287,29 @@ function Profile({ loading, token }) {
       .then(([res, data]) => {
         console.log(res, data);
         if (data == null) {
-          console.log("Echec updateProfil");
+          console.log('Echec updateProfil');
         } else {
           ToastAndroid.showWithGravity(
-            "Informations modifiées",
+            'Informations modifiées',
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM
           );
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        return { name: "network error", description: "" };
+        return { name: 'network error', description: '' };
       });
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: "flex-start", paddingTop: 12 }}>
+    <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12 }}>
       <View
         style={{
           flex: 0.4,
-          backgroundColor: "#ffc848",
-          alignItems: "center",
-          justifyContent: "center",
+          backgroundColor: '#ffc848',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Image
@@ -336,22 +321,19 @@ function Profile({ loading, token }) {
           }}
         />
         <TouchableOpacity
-          style={{ position: "absolute", right: 0, top: 0, padding: 20 }}
+          style={{ position: 'absolute', right: 0, top: 0, padding: 20 }}
           onPress={() => toggleCamera()}
         >
           <Image
-            source={require("../../assets/photo-camera.png")}
+            source={require('../../assets/photo-camera.png')}
             style={{ width: 40, height: 40 }}
           />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ position: "absolute", left: 0, top: 0, padding: 20 }}
-          onPress={() => Alert.alert("Hello")}
+          style={{ position: 'absolute', left: 0, top: 0, padding: 20 }}
+          onPress={() => Alert.alert('Hello')}
         >
-          <Image
-            source={require("../../assets/logout.png")}
-            style={{ width: 40, height: 40 }}
-          />
+          <Image source={require('../../assets/logout.png')} style={{ width: 40, height: 40 }} />
         </TouchableOpacity>
       </View>
       {selectBody()}
@@ -359,17 +341,14 @@ function Profile({ loading, token }) {
   );
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   token: state.user.token,
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getConnected: (email, pwd) => dispatch({ type: "CONNECT", email, pwd }),
+    getConnected: (email, pwd) => dispatch({ type: 'CONNECT', email, pwd }),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StyleWrapper(Profile));
+export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(Profile));
