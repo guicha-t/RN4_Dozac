@@ -1,6 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
-import { Button, Icon, Divider, withBadge } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
 import StyleWrapper from '../HOC/styleHOC';
 
@@ -52,13 +53,10 @@ function SplashScreen({ navigation, loading }) {
 
   return (
     <View style={styles.buttonContainer}>
-      <View style={{flex: 0.4, justifyContent:'flex-end', alignItems:'center'}}>
-        <Image
-          source={require('../../assets/Cocktail.png')}
-          style={{ width: 240, height: 240 }}
-        />
+      <View style={{ flex: 0.4, justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Image source={require('../../assets/Cocktail.png')} style={{ width: 240, height: 240 }} />
       </View>
-      <View style={{flex: 0.4, justifyContent:'center'}}>
+      <View style={{ flex: 0.4, justifyContent: 'center' }}>
         <ButtonStyled
           title={TranslateSplashScreen('login')}
           onPress={() => navigation.navigate('Login')}
@@ -68,8 +66,10 @@ function SplashScreen({ navigation, loading }) {
           onPress={() => navigation.navigate('SignIn')}
         />
       </View>
-      <View style={{flex: 0.2, justifyContent:'flex-end', alignItems:'center'}}>
-        <Text style={{fontSize: 8, color: '#696969'}}>Romain GADRAT - Thomas GUICHARD - Artem VATOUTINE</Text>
+      <View style={{ flex: 0.2, justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Text style={{ fontSize: 8, color: '#696969' }}>
+          Romain GADRAT - Thomas GUICHARD - Artem VATOUTINE
+        </Text>
       </View>
     </View>
   );

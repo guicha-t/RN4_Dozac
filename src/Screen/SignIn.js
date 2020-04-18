@@ -1,11 +1,21 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-use-before-define */
 import React from 'react';
-import { View, Text, TextInput, Button, Modal, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Modal,
+  StyleSheet,
+  Image,
+  KeyboardAvoidingView,
+} from 'react-native';
 
 import { connect } from 'react-redux';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import StyleWrapper from '../HOC/styleHOC';
 import LoadingIcon from '../components/LoadingIcon';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function SignIn({ loading, created, getCreate, navigation }) {
   if (loading) {
@@ -16,21 +26,18 @@ function SignIn({ loading, created, getCreate, navigation }) {
     setOpen(created);
   }, [created]);
 
-  console.log(created);
   const [email, onChangeEmail] = React.useState('');
   const [pwd, onChangePwd] = React.useState('');
   const [open, setOpen] = React.useState(created);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12 }}>
-      {
-        created ? navigation.navigate('Login', { user: email, pass: pwd }) : true
-      }
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12 }}
+    >
+      {created ? navigation.navigate('Login', { user: email, pass: pwd }) : true}
       <View style={{ flex: 0.4, alignItems: 'center', justifyContent: 'center' }}>
-        <Image
-          source={require('../../assets/Cocktail.png')}
-          style={{ width: 240, height: 240 }}
-        />
+        <Image source={require('../../assets/Cocktail.png')} style={{ width: 240, height: 240 }} />
       </View>
       <View style={{ flex: 0.6, padding: 20 }}>
         <View style={{ flex: 0.2, paddingBottom: 20 }}>
@@ -55,7 +62,6 @@ function SignIn({ loading, created, getCreate, navigation }) {
               borderColor: 'gray',
               borderWidth: 1,
               paddingLeft: 10,
-              borderWidth: 1,
               backgroundColor: 'white',
             }}
             onChangeText={text => onChangePwd(text)}
@@ -65,9 +71,14 @@ function SignIn({ loading, created, getCreate, navigation }) {
         <View style={{ flex: 0.6, alignItems: 'center', justifyContent: 'center' }}>
           <TouchableOpacity
             onPress={() => getCreate(email, pwd)}
-            style={{padding: 10, backgroundColor: 'blanchedalmond', borderRadius: 6, borderWidth: 1}}
+            style={{
+              padding: 10,
+              backgroundColor: 'blanchedalmond',
+              borderRadius: 6,
+              borderWidth: 1,
+            }}
           >
-            <Text style={{color: 'brown'}}>Créer</Text>
+            <Text style={{ color: 'brown' }}>Créer</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -82,17 +93,13 @@ function SignIn({ loading, created, getCreate, navigation }) {
             <Text style={{ color: 'brown' }}>Se connecter</Text>
           </TouchableOpacity>
         </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={open === false ? true : false}
-        >
+        <Modal animationType="slide" transparent visible={open === false}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Une erreur est survenue</Text>
 
               <TouchableOpacity
-                style={{ padding: 10, borderWidth: 1, backgroundColor: "blanchedalmond" }}
+                style={{ padding: 10, borderWidth: 1, backgroundColor: 'blanchedalmond' }}
                 onPress={() => {
                   setOpen(null);
                 }}
@@ -119,42 +126,41 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(StyleWrapper(SignIn));
 
-
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
   },
   textStyle: {
-    color: "brown",
-    fontWeight: "bold",
-    textAlign: "center"
+    color: 'brown',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
-  }
+    textAlign: 'center',
+  },
 });

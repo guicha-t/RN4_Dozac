@@ -1,12 +1,5 @@
-import { Server } from '../Server';
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-unused-vars */
+import { CONNECTED } from '../actionIds/user';
 
-import { request } from '../actions/utils';
-import {
-  CONNECTED,
-  DISCONNECT,
-  USER_INFO,
-  CONNECTED,
-  CREATE
-} from '../actionIds/user';
-
-export const getConnected = params => dispatch => (CONNECTED);
+export const getConnected = params => dispatch => CONNECTED;

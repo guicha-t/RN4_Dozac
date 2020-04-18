@@ -1,10 +1,12 @@
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
+/* eslint-disable no-use-before-define */
 import {
   View,
   TouchableOpacity,
   Text,
   Image,
   Dimensions,
-  Alert,
   TextInput,
   Button,
   ToastAndroid,
@@ -49,7 +51,6 @@ function Profile({ loading, token, getSchwifty, navigation }) {
     }
 
     getPermission();
-    console.log(token);
 
     getUserInfo();
   }, []);
@@ -65,24 +66,18 @@ function Profile({ loading, token, getSchwifty, navigation }) {
     })
       .then(response => {
         const statusCode = response.status;
-        if (statusCode == 200) {
+        if (statusCode === 200) {
           const data = response.json();
           return Promise.all([statusCode, data]);
         }
         return Promise.all([statusCode]);
       })
-      .then(([res, data]) => {
-        console.log(data);
-        if (data == null) {
-          console.log('Echec GetInfoProfil');
-        } else {
-          setEmail(data.email);
-          setUsername(data.username);
-          setProfilPic(data.profPic);
-        }
+      .then(([data]) => {
+        setEmail(data.email);
+        setUsername(data.username);
+        setProfilPic(data.profPic);
       })
-      .catch(error => {
-        console.error(error);
+      .catch(() => {
         return { name: 'network error', description: '' };
       });
   }
@@ -107,14 +102,12 @@ function Profile({ loading, token, getSchwifty, navigation }) {
     const [cameraRef, setCameraRef] = useState(null);
 
     takePicture = async () => {
-      console.log(cameraRef.takePictureAsync);
       if (cameraRef) {
         const photo = await cameraRef.takePictureAsync({ base64: false });
 
         const fileType = photo.uri.substring(photo.uri.lastIndexOf('.') + 1);
         console.log(`TYPE: ${fileType}`);
         const { uri } = photo;
-        console.log(uri);
 
         const datasTosend = new FormData();
         datasTosend.append('profPic', {
@@ -122,8 +115,6 @@ function Profile({ loading, token, getSchwifty, navigation }) {
           name: 'NewPP.jpg',
           type: 'image/jpg',
         });
-
-        console.log(datasTosend);
 
         fetch('http://193.70.90.162:3000/users/uploadProfPic', {
           method: 'POST',
@@ -136,14 +127,13 @@ function Profile({ loading, token, getSchwifty, navigation }) {
         })
           .then(response => {
             const statusCode = response.status;
-            if (statusCode == 200) {
+            if (statusCode === 200) {
               const data = response.json();
               return Promise.all([statusCode, data]);
             }
             return Promise.all([statusCode]);
           })
-          .then(([res, data]) => {
-            console.log(res, data);
+          .then(([data]) => {
             if (data == null) {
               console.log('Echec updateProfPic');
             } else {
@@ -156,8 +146,7 @@ function Profile({ loading, token, getSchwifty, navigation }) {
               toggleCamera();
             }
           })
-          .catch(error => {
-            console.error(error);
+          .catch(() => {
             return { name: 'network error', description: '' };
           });
       }
@@ -270,14 +259,13 @@ function Profile({ loading, token, getSchwifty, navigation }) {
     })
       .then(response => {
         const statusCode = response.status;
-        if (statusCode == 200) {
+        if (statusCode === 200) {
           const data = response.json();
           return Promise.all([statusCode, data]);
         }
         return Promise.all([statusCode]);
       })
-      .then(([res, data]) => {
-        console.log(res, data);
+      .then(([data]) => {
         if (data == null) {
           console.log('Echec updateProfil');
         } else {
@@ -288,8 +276,7 @@ function Profile({ loading, token, getSchwifty, navigation }) {
           );
         }
       })
-      .catch(error => {
-        console.error(error);
+      .catch(() => {
         return { name: 'network error', description: '' };
       });
   }
@@ -319,12 +306,10 @@ function Profile({ loading, token, getSchwifty, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ position: 'absolute', left: 0, top: 0, padding: 20 }}
-          onPress={() => 
-            {
-              getSchwifty() 
-              navigation.navigate('SplashScreen');
-            }
-          }
+          onPress={() => {
+            getSchwifty();
+            navigation.navigate('SplashScreen');
+          }}
         >
           <Image source={require('../../assets/logout.png')} style={{ width: 40, height: 40 }} />
         </TouchableOpacity>
@@ -341,7 +326,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     getConnected: (email, pwd) => dispatch({ type: 'CONNECT', email, pwd }),
-    getSchwifty: () => dispatch({ type: 'DISCONNECT'}) 
+    getSchwifty: () => dispatch({ type: 'DISCONNECT' }),
   };
 };
 

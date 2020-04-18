@@ -1,16 +1,9 @@
-import {
-  CONNECT,
-  DISCONNECT,
-  USER_INFO,
-  CONNECTED,
-  CREATE,
-  CREATED
-} from '../actionIds/user';
+import { CONNECT, DISCONNECT, USER_INFO, CONNECTED, CREATE, CREATED } from '../actionIds/user';
 
 export default (state, action) => {
   switch (action.type) {
     case CONNECT:
-      return { ...state, email: action.email, pwd: action.pwd};
+      return { ...state, email: action.email, pwd: action.pwd };
     case DISCONNECT:
       return { ...state, connected: false, token: null };
     case USER_INFO:
