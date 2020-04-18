@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, TextInput, StyleSheet, Modal } from 'react-native';
+import { View, TouchableOpacity, Text, TextInput, StyleSheet, Modal, Image, KeyboardAvoidingView } from 'react-native';
 
 import { connect } from 'react-redux';
 
@@ -15,15 +15,15 @@ function Login({route, loading, getConnected, connected, navigation }) {
     return <LoadingIcon />;
   }
 
-  let user = 'Tho@mas';
-  let pass = 'bonjour';
+  let user = '';
+  let pass = '';
 
   console.log("rout", route)
   if (route.params != undefined) {
     user = route.params.user;
     pass = route.params.pass;
   }
-  
+
   console.log("user", user, pass)
 
   const [email, onChangeEmail] = React.useState(user);
@@ -32,14 +32,17 @@ function Login({route, loading, getConnected, connected, navigation }) {
 
 
   return (
-    <View style={{ flex: 1, justifyContent: 'flex-start'}}>
+    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1, justifyContent: 'flex-start'}}>
 
       {
           connected ? navigation.navigate('Menu') : true
       }
 
-      <View style={{flex: 0.1, alignItems:'center', justifyContent:'center'}}>
-        <Text>LOGO</Text>
+      <View style={{flex: 0.4, alignItems:'center', justifyContent:'center'}}>
+        <Image
+          source={require('../../assets/Cocktail.png')}
+          style={{ width: 240, height: 240 }}
+        />
       </View>
 
       <View style={{ flex: 0.6, padding: 20 }}>
@@ -119,7 +122,7 @@ function Login({route, loading, getConnected, connected, navigation }) {
           </View>
         </Modal>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

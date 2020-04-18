@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Modal, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, Modal, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
 
 import { connect } from 'react-redux';
 
@@ -17,17 +17,20 @@ function SignIn({ loading, created, getCreate, navigation }) {
   }, [created]);
 
   console.log(created);
-  const [email, onChangeEmail] = React.useState('thomas');
-  const [pwd, onChangePwd] = React.useState('bonjour');
+  const [email, onChangeEmail] = React.useState('');
+  const [pwd, onChangePwd] = React.useState('');
   const [open, setOpen] = React.useState(created);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12 }}>
+    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1, justifyContent: 'flex-start', paddingTop: 12 }}>
       {
         created ? navigation.navigate('Login', { user: email, pass: pwd }) : true
       }
       <View style={{ flex: 0.4, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>MojitoApp</Text>
+        <Image
+          source={require('../../assets/Cocktail.png')}
+          style={{ width: 240, height: 240 }}
+        />
       </View>
       <View style={{ flex: 0.6, padding: 20 }}>
         <View style={{ flex: 0.2, paddingBottom: 20 }}>
@@ -52,6 +55,7 @@ function SignIn({ loading, created, getCreate, navigation }) {
               borderColor: 'gray',
               borderWidth: 1,
               paddingLeft: 10,
+              borderWidth: 1,
               backgroundColor: 'white',
             }}
             onChangeText={text => onChangePwd(text)}
@@ -61,7 +65,7 @@ function SignIn({ loading, created, getCreate, navigation }) {
         <View style={{ flex: 0.6, alignItems: 'center', justifyContent: 'center' }}>
           <TouchableOpacity
             onPress={() => getCreate(email, pwd)}
-            style={{padding: 10, backgroundColor: 'blanchedalmond', borderRadius: 6}}
+            style={{padding: 10, backgroundColor: 'blanchedalmond', borderRadius: 6, borderWidth: 1}}
           >
             <Text style={{color: 'brown'}}>Créer</Text>
           </TouchableOpacity>
@@ -70,6 +74,7 @@ function SignIn({ loading, created, getCreate, navigation }) {
               backgroundColor: 'blanchedalmond',
               margin: 4,
               padding: 10,
+              borderWidth: 1,
               borderRadius: 6,
             }}
             onPress={() => navigation.navigate('Login')}
@@ -87,7 +92,7 @@ function SignIn({ loading, created, getCreate, navigation }) {
               <Text style={styles.modalText}>Une erreur est survenue</Text>
 
               <TouchableOpacity
-                style={{ padding: 10, backgroundColor: "blanchedalmond" }}
+                style={{ padding: 10, borderWidth: 1, backgroundColor: "blanchedalmond" }}
                 onPress={() => {
                   setOpen(null);
                 }}
@@ -98,7 +103,7 @@ function SignIn({ loading, created, getCreate, navigation }) {
           </View>
         </Modal>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
