@@ -43,7 +43,6 @@ function Cocktails({ navigation }) {
   if (loading) {
     return <LoadingIcon />;
   }
-  // console.log(cocktails, hasErrors);
 
   return (
     <View style={{ flex: 1 }}>
